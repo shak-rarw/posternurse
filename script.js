@@ -3,7 +3,7 @@ const form = document.getElementById("poll-form");
 const resultDiv = document.getElementById("poll-result");
 const resultList = document.getElementById("result-list");
 
-const SCRIPT_URL = "https://script.google.com/macros/s/YOUR_SCRIPT_ID/exec"; // Ganti dengan URL Apps Script sebenar
+const SCRIPT_URL = "https://script.google.com/d/1a-G9r34Z7DVV_EY5P51q1AN2v7Pjaykjqbq62ebr-ItfmhR6hO0dudLD/edit?usp=sharing"; // Ganti dengan URL Apps Script sebenar
 
 form.addEventListener("submit", function (e) {
     e.preventDefault();
