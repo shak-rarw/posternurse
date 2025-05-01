@@ -1,34 +1,59 @@
-document.getElementById("poll-form").addEventListener("submit", function(event){
-    event.preventDefault();
+const form = document.getElementById("poll-form");
+const resultDiv = document.getElementById("poll-result");
+const resultList = document.getElementById("result-list");
 
-    const choice = document.querySelector('input[name="poll"]:checked');
-    if (!choice) {
-        alert("Please select an option before voting.");
-        return;
+const SCRIPT_URL = "https://script.google.com/macros/s/YOUR_SCRIPT_ID/exec"; // Ganti dengan URL anda
+
+form.addEventListener("submit", function (e) {
+    e.preventDefault();
+
+    const selected = document.querySelector('input[name="poll"]:checked');
+
+    if (selected) {
+        const choice = selected.value;
+
+        // Hantar undian ke Google Sheets
+        fetch(SCRIPT_URL, {
+            method: 'POST',
+            body: new URLSearchParams({ "choice": choice })
+        })
+        .then(response => response.text())
+        .then(data => {
+            alert("Undian anda telah dihantar.");
+            fetchResults(); // Dapatkan keputusan semasa
+        })
+        .catch(error => {
+            alert("Ralat semasa menghantar undian.");
+            console.error(error);
+        });
+    } else {
+        alert("Sila pilih satu pilihan sebelum menghantar undian.");
     }
-
-    const selected = choice.value;
-    const voteKey = "pollVotes";
-
-    let votes = JSON.parse(localStorage.getItem(voteKey)) || {};
-    votes[selected] = (votes[selected] || 0) + 1;
-
-    // Limit to 2 votes per device
-    const totalVotes = Object.values(votes).reduce((a, b) => a + b, 0);
-    if (totalVotes > 2) {
-        alert("You have reached the maximum of 2 votes.");
-        return;
-    }
-
-    localStorage.setItem(voteKey, JSON.stringify(votes));
-
-    const resultsDiv = document.getElementById("poll-result");
-    const resultList = document.getElementById("result-list");
-    resultList.innerHTML = "";
-    for (let option in votes) {
-        const li = document.createElement("li");
-        li.textContent = option + ": " + votes[option];
-        resultList.appendChild(li);
-    }
-    resultsDiv.style.display = "block";
 });
+
+function fetchResults() {
+    fetch(SCRIPT_URL)
+        .then(res => res.json())
+        .then(data => {
+            resultList.innerHTML = "";
+            let totalVotes = 0;
+
+            data.forEach(item => {
+                const li = document.createElement("li");
+                li.textContent = `${item.choice.toUpperCase()}: ${item.votes} undi`;
+                resultList.appendChild(li);
+                totalVotes += parseInt(item.votes);
+            });
+
+            const total = document.createElement("p");
+            total.style.fontWeight = "bold";
+            total.textContent = `Jumlah keseluruhan undian: ${totalVotes}`;
+            resultList.appendChild(total);
+
+            resultDiv.style.display = "block";
+            form.style.display = "none";
+        });
+}
+
+// Papar keputusan terus kalau pengguna reload (optional)
+window.addEventListener("load", fetchResults);
