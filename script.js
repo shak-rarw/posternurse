@@ -1,8 +1,9 @@
+// Kod undian lengkap menggunakan Google Sheets (Apps Script) sebagai backend
 const form = document.getElementById("poll-form");
 const resultDiv = document.getElementById("poll-result");
 const resultList = document.getElementById("result-list");
 
-const SCRIPT_URL = "https://script.google.com/macros/s/YOUR_SCRIPT_ID/exec"; // Ganti dengan URL anda
+const SCRIPT_URL = "https://script.google.com/macros/s/YOUR_SCRIPT_ID/exec"; // Ganti dengan URL Apps Script sebenar
 
 form.addEventListener("submit", function (e) {
     e.preventDefault();
