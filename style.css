@@ -1,45 +1,43 @@
 body {
-    font-family: Arial, sans-serif;
     background-color: #D0E8C5;
+    font-family: Arial, sans-serif;
     text-align: center;
+    margin: 0;
     padding: 20px;
 }
 
-.grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 15px;
-    margin: 20px auto;
-    max-width: 1200px;
+h1 {
+    color: #333;
+    margin-bottom: 20px;
 }
 
-.grid label {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+form {
+    margin-bottom: 20px;
 }
 
-.grid img {
-    width: 100%;
-    max-width: 200px;
+label {
+    margin: 10px;
+    display: inline-block;
+    cursor: pointer;
+}
+
+img {
+    width: 200px;
     height: auto;
     border: 3px solid transparent;
     border-radius: 10px;
     transition: 0.3s;
 }
 
-.grid input[type="radio"] {
-    margin: 10px 0;
-}
-
-.grid input[type="radio"]:checked + img {
-    border: 3px solid #4CAF50;
+input[type="radio"]:checked + img {
+    border-color: #4CAF50;
+    box-shadow: 0 0 10px #4CAF50;
 }
 
 button {
     margin-top: 20px;
-    padding: 10px 25px;
-    font-size: 16px;
+    padding: 10px 20px;
+    font-size: 18px;
     background-color: #4CAF50;
     color: white;
     border: none;
@@ -47,8 +45,20 @@ button {
     cursor: pointer;
 }
 
+button:hover {
+    background-color: #45a049;
+}
+
 #poll-result {
     margin-top: 30px;
-    font-weight: bold;
-    font-size: 18px;
+}
+
+ul#result-list {
+    list-style: none;
+    padding: 0;
+}
+
+ul#result-list li {
+    font-size: 20px;
+    margin: 10px 0;
 }
