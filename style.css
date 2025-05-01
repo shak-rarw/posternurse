@@ -1,0 +1,54 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #D0E8C5;
+    text-align: center;
+    padding: 20px;
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 15px;
+    margin: 20px auto;
+    max-width: 1200px;
+}
+
+.grid label {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.grid img {
+    width: 100%;
+    max-width: 200px;
+    height: auto;
+    border: 3px solid transparent;
+    border-radius: 10px;
+    transition: 0.3s;
+}
+
+.grid input[type="radio"] {
+    margin: 10px 0;
+}
+
+.grid input[type="radio"]:checked + img {
+    border: 3px solid #4CAF50;
+}
+
+button {
+    margin-top: 20px;
+    padding: 10px 25px;
+    font-size: 16px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+#poll-result {
+    margin-top: 30px;
+    font-weight: bold;
+    font-size: 18px;
+}
