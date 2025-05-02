@@ -1,60 +1,58 @@
-// Kod undian lengkap menggunakan Google Sheets (Apps Script) sebagai backend
-const form = document.getElementById("poll-form");
-const resultDiv = document.getElementById("poll-result");
-const resultList = document.getElementById("result-list");
-
-const SCRIPT_URL = "https://script.google.com/d/1a-G9r34Z7DVV_EY5P51q1AN2v7Pjaykjqbq62ebr-ItfmhR6hO0dudLD/edit?usp=sharing"; // Ganti dengan URL Apps Script sebenar
-
-form.addEventListener("submit", function (e) {
-    e.preventDefault();
-
-    const selected = document.querySelector('input[name="poll"]:checked');
-
-    if (selected) {
-        const choice = selected.value;
-
-        // Hantar undian ke Google Sheets
-        fetch(SCRIPT_URL, {
-            method: 'POST',
-            body: new URLSearchParams({ "choice": choice })
-        })
-        .then(response => response.text())
-        .then(data => {
-            alert("Undian anda telah dihantar.");
-            fetchResults(); // Dapatkan keputusan semasa
-        })
-        .catch(error => {
-            alert("Ralat semasa menghantar undian.");
-            console.error(error);
-        });
-    } else {
-        alert("Sila pilih satu pilihan sebelum menghantar undian.");
-    }
-});
-
-function fetchResults() {
-    fetch(SCRIPT_URL)
-        .then(res => res.json())
-        .then(data => {
-            resultList.innerHTML = "";
-            let totalVotes = 0;
-
-            data.forEach(item => {
-                const li = document.createElement("li");
-                li.textContent = `${item.choice.toUpperCase()}: ${item.votes} undi`;
-                resultList.appendChild(li);
-                totalVotes += parseInt(item.votes);
-            });
-
-            const total = document.createElement("p");
-            total.style.fontWeight = "bold";
-            total.textContent = `Jumlah keseluruhan undian: ${totalVotes}`;
-            resultList.appendChild(total);
-
-            resultDiv.style.display = "block";
-            form.style.display = "none";
-        });
+body {
+  font-family: Arial, sans-serif;
+  background-color: #d0e8c5;
+  text-align: center;
+  margin: 0;
+  padding: 20px;
 }
 
-// Papar keputusan terus kalau pengguna reload (optional)
-window.addEventListener("load", fetchResults);
+h1, h2 {
+  color: #333;
+}
+
+form .options {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 20px;
+  margin-bottom: 20px;
+  justify-items: center;
+}
+
+form label {
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+form img {
+  width: 100%;
+  max-width: 200px;
+  height: auto;
+  border: 2px solid #ccc;
+  border-radius: 10px;
+  transition: transform 0.2s ease;
+}
+
+form input[type="radio"] {
+  display: none;
+}
+
+form input[type="radio"]:checked + img {
+  border: 3px solid #2196f3;
+  transform: scale(1.05);
+}
+
+button {
+  padding: 10px 20px;
+  font-size: 18px;
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #45a049;
+}
