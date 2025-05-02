@@ -1,71 +1,58 @@
-const form = document.getElementById("poll-form");
-const resultDiv = document.getElementById("poll-result");
-const resultList = document.getElementById("result-list");
-const totalVotesDisplay = document.getElementById("totalVotes");
-
-const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwOFv4Y-I0IEc1R0bDAcMFtv1l-4meCXUxS36Wu_l_zQZrdNYagO-vcEY3f4_7aQAHN/exec";
-
-let voteCount = parseInt(localStorage.getItem("voteCount")) || 0;
-
-form.addEventListener("submit", function (e) {
-  e.preventDefault();
-
-  if (voteCount >= 2) {
-    alert("Anda hanya boleh mengundi 2 kali sahaja.");
-    return;
-  }
-
-  const selected = document.querySelector('input[name="poll"]:checked');
-
-  if (selected) {
-    const choice = selected.value;
-    voteCount++;
-    localStorage.setItem("voteCount", voteCount);
-
-    fetch(SCRIPT_URL, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/x-www-form-urlencoded",
-      },
-      body: `choice=${encodeURIComponent(choice)}`,
-    })
-      .then((response) => response.text())
-      .then(() => {
-        displayResults();
-      })
-      .catch((error) => {
-        console.error("Ralat hantar undian:", error);
-      });
-  } else {
-    alert("Sila pilih satu pilihan sebelum undi.");
-  }
-});
-
-function displayResults() {
-  form.style.display = "none";
-  resultDiv.style.display = "block";
-  resultList.innerHTML = "";
-
-  fetch(SCRIPT_URL)
-    .then((response) => response.json())
-    .then((data) => {
-      let total = 0;
-      data.forEach((item) => {
-        total += parseInt(item.votes);
-        const li = document.createElement("li");
-        li.textContent = `${item.choice.toUpperCase()}: ${item.votes} vote(s)`;
-        resultList.appendChild(li);
-      });
-
-      if (totalVotesDisplay) {
-        totalVotesDisplay.textContent = `Jumlah keseluruhan undian: ${total}`;
-      }
-    })
-    .catch((error) => {
-      console.error("Ralat ambil keputusan:", error);
-    });
+body {
+  font-family: Arial, sans-serif;
+  background-color: #d0e8c5;
+  text-align: center;
+  margin: 0;
+  padding: 20px;
 }
 
-if (voteCount > 0) {
-  displayResults();
+h1, h2 {
+  color: #333;
+}
+
+form .options {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 20px;
+  margin-bottom: 20px;
+  justify-items: center;
+}
+
+form label {
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+form img {
+  width: 100%;
+  max-width: 200px;
+  height: auto;
+  border: 2px solid #ccc;
+  border-radius: 10px;
+  transition: transform 0.2s ease;
+}
+
+form input[type="radio"] {
+  display: none;
+}
+
+form input[type="radio"]:checked + img {
+  border: 3px solid #2196f3;
+  transform: scale(1.05);
+}
+
+button {
+  padding: 10px 20px;
+  font-size: 18px;
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #45a049;
 }
